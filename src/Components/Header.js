@@ -5,7 +5,7 @@ import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo-hooks";
 import Input from "./Input";
 import useInput from "../Hooks/useInput";
-import { Compass, HeartEmpty, User, InstaLogo } from "./Icons";
+import { Compass, HeartEmpty, User, Logo } from "./Icons";
 
 const Header = styled.header`
   width: 100%;
@@ -82,7 +82,7 @@ export default withRouter(({ history }) => {
       <HeaderWrapper>
         <HeaderColumn>
           <Link to="/">
-            <InstaLogo />
+            <Logo />
           </Link>
         </HeaderColumn>
         <HeaderColumn>
