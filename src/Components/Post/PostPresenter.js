@@ -155,13 +155,18 @@ export default ({
       </Buttons>
       <FatText text={likeCount === 1 ? "1 like" : `${likeCount} likes`} />
       <Caption>
-        <FatText text={username} /> {caption}
+        <Link to={`/${username}`}>
+          <FatText text={username} />
+        </Link>{" "}
+        {caption}
       </Caption>
       {comments && (
         <Comments>
           {comments.map((comment) => (
             <Comment key={comment.id}>
-              <FatText text={comment.user.username} />
+              <Link to={`/${comment.user.username}`}>
+                <FatText text={comment.user.username} />
+              </Link>
               {comment.text}
             </Comment>
           ))}
