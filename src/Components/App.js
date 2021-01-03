@@ -1,6 +1,5 @@
 import React from "react";
-import { gql } from "apollo-boost";
-import { useQuery } from "react-apollo-hooks";
+import { gql, useQuery } from "@apollo/client";
 import styled, { ThemeProvider } from "styled-components";
 import { HashRouter as Router } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -24,9 +23,7 @@ const Wrapper = styled.div`
 `;
 
 export default () => {
-  const {
-    data: { isLoggedIn },
-  } = useQuery(QUERY);
+  const { data } = useQuery(QUERY);
 
   return (
     <ThemeProvider theme={Theme}>
@@ -36,7 +33,7 @@ export default () => {
           <>
             <Header />
             <Wrapper>
-              <Routes isLoggedIn={isLoggedIn} />
+              <Routes isLoggedIn={data?.isLoggedIn} />
               <Footer />
             </Wrapper>
           </>

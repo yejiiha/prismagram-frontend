@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useMutation } from "react-apollo-hooks";
+import { useMutation } from "@apollo/client";
 import useInput from "../../Hooks/useInput";
 import PostPresenter from "./PostPresenter";
 import { ADD_COMMENT, TOGGLE_LIKE } from "./PostQueries";

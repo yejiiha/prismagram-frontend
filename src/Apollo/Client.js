@@ -1,13 +1,26 @@
-import ApolloClient from "apollo-boost";
-import { defaults, resolvers } from "./LocalState";
+import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { typeDefs, resolvers } from "./LocalState";
+
+const httpLink = new HttpLink({
+  uri: "http://localhost:4000/",
+});
+
+const authLink = setContext(async (_, { headers }) => {
+  const getToken = await localStorage.getItem("token");
+  return {
+    headers: {
+      ...headers,
+      authorization: getToken ? `Bearer ${getToken}` : "",
+    },
+  };
+});
+const link = authLink.concat(httpLink);
 
 export default new ApolloClient({
-  uri: "http://localhost:4000",
-  clientState: {
-    defaults,
-    resolvers,
-  },
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-  },
+  cache: new InMemoryCache(),
+  typeDefs,
+  resolvers,
+  link,
+  connectToDevTools: true,
 });
