@@ -67,21 +67,16 @@ const SearchPresenter = ({ searchTerm, loading, data }) => {
         </PostSection>
       </Wrapper>
     );
-  } else if (loading === true) {
-    return (
-      <Wrapper>
-        <Loader />
-      </Wrapper>
-    );
   }
+  // else if (loading === true) {
+  //   return (
+  //     <Wrapper>
+  //       <Loader />
+  //     </Wrapper>
+  //   );
+  // }
   return null;
 };
-
-// const SearchPresenter = ({ searchTerm, loading }) => (
-//   <Wrapper>
-//     {searchTerm === undefined && <FatText text={"Search for something"} />}
-//   </Wrapper>
-// );
 
 SearchPresenter.propTypes = {
   searchTerm: PropTypes.string,

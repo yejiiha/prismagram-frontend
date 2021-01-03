@@ -49,7 +49,7 @@ export default () => {
       <Helmet>
         <title>Feed | Prismagram</title>
       </Helmet>
-      {loading && <Loader />}
+      {/* {loading && <Loader />} */}
       {!loading &&
         data &&
         data.seeFeed &&
