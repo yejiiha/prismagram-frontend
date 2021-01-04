@@ -27,6 +27,13 @@ const UserColumn = styled.div`
   margin-left: 10px;
 `;
 
+const PLink = styled(Link)`
+  &:hover {
+    text-decoration: underline;
+    text-underline-position: under;
+  }
+`;
+
 const Location = styled.span`
   display: block;
   margin-top: 5px;
@@ -127,9 +134,9 @@ export default ({
     <Header>
       <Avatar size="sm" url={avatar} />
       <UserColumn>
-        <Link to={`/${username}`}>
+        <PLink to={`/${username}`}>
           <FatText text={username} />
-        </Link>
+        </PLink>
         <Location>{location}</Location>
       </UserColumn>
     </Header>
@@ -155,18 +162,18 @@ export default ({
       </Buttons>
       <FatText text={likeCount === 1 ? "1 like" : `${likeCount} likes`} />
       <Caption>
-        <Link to={`/${username}`}>
+        <PLink to={`/${username}`}>
           <FatText text={username} />
-        </Link>{" "}
+        </PLink>{" "}
         {caption}
       </Caption>
       {comments && (
         <Comments>
           {comments.map((comment) => (
             <Comment key={comment.id}>
-              <Link to={`/${comment.user.username}`}>
+              <PLink to={`/${comment.user.username}`}>
                 <FatText text={comment.user.username} />
-              </Link>
+              </PLink>
               {comment.text}
             </Comment>
           ))}

@@ -24,6 +24,13 @@ const GET_USER = gql`
         likeCount
         commentCount
       }
+      followers {
+        id
+        username
+        avatar
+        fullName
+        isFollowing
+      }
     }
   }
 `;
