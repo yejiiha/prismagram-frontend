@@ -32,15 +32,3 @@
 .Modal.Show {
   top: 30%;
 }
-
-.Close {
-  cursor: pointer;
-  position: absolute;
-  top: 16px;
-  right: 10px;
-  background-color: transparent;
-  border: 0;
-  font-size: 18px;
-  border: none;
-  outline: none;
-}

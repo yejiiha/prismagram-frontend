@@ -31,6 +31,13 @@ const GET_USER = gql`
         fullName
         isFollowing
       }
+      following {
+        id
+        username
+        avatar
+        fullName
+        isFollowing
+      }
     }
   }
 `;

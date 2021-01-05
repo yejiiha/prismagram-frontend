@@ -45,7 +45,7 @@ const FLink = styled(Link)`
   }
 `;
 
-const FollowersBox = ({ id, username, avatar, fullName, isFollowing }) => (
+const FollowModal = ({ id, username, avatar, fullName, isFollowing }) => (
   <FollowersLists>
     <FollowersList>
       <List>
@@ -69,7 +69,7 @@ const FollowersBox = ({ id, username, avatar, fullName, isFollowing }) => (
   </FollowersLists>
 );
 
-FollowersBox.propTypes = {
+FollowModal.propTypes = {
   id: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   avatar: PropTypes.string,
@@ -77,4 +77,4 @@ FollowersBox.propTypes = {
   isFollowing: PropTypes.bool.isRequired,
 };
 
-export default FollowersBox;
+export default FollowModal;
