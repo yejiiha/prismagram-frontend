@@ -3,11 +3,11 @@ import styled, { css } from "styled-components";
 import FatText from "./FatText";
 import FollowModalList from "./FollowModalList";
 
-const Show = css`
+const ModalShow = css`
   top: 30%;
 `;
 
-const Modal = styled.div`
+const FollowersModal = styled.div`
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -20,7 +20,7 @@ const Modal = styled.div`
   z-index: 10;
   cursor: auto;
   border-radius: 12px;
-  ${({ active }) => (active ? Show : "")}
+  ${({ active }) => (active ? ModalShow : "")}
 `;
 
 const FollowersHeader = styled.div`
@@ -43,7 +43,7 @@ const FollowersTitle = styled.h3``;
 const Close = styled.button`
   cursor: pointer;
   position: absolute;
-  top: 16px;
+  top: 12px;
   right: 10px;
   background-color: transparent;
   border: 0;
@@ -74,7 +74,7 @@ const Overlay = styled.div`
 export default ({ followers, followersModal, setFollowersModal }) => {
   return (
     <>
-      <Modal active={followersModal}>
+      <FollowersModal active={followersModal}>
         <FollowersHeader>
           <Column>
             <FollowersTitle>
@@ -101,10 +101,9 @@ export default ({ followers, followersModal, setFollowersModal }) => {
               ))}
           </ul>
         </ModalContainer>
-      </Modal>
-      <div className={`Overlay ${followersModal ? "Show" : ""}`} />
+      </FollowersModal>
 
-      {/* <Overlay active={followersModal} /> */}
+      <Overlay active={followersModal} />
     </>
   );
 };

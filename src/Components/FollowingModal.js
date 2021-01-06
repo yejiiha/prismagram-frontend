@@ -3,11 +3,11 @@ import styled, { css } from "styled-components";
 import FatText from "./FatText";
 import FollowModalList from "./FollowModalList";
 
-const Show = css`
+const ModalShow = css`
   top: 30%;
 `;
 
-const Modal = styled.div`
+const FollowingModal = styled.div`
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -20,7 +20,7 @@ const Modal = styled.div`
   z-index: 10;
   cursor: auto;
   border-radius: 12px;
-  ${Show};
+  ${({ active }) => (active ? ModalShow : "")}
 `;
 
 const FollowersHeader = styled.div`
@@ -54,10 +54,27 @@ const Close = styled.button`
 
 const ModalContainer = styled.div``;
 
+const OverlayShow = css`
+  display: block;
+`;
+
+const Overlay = styled.div`
+  background-color: rgba(0, 0, 0, 0.55);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
+  display: none;
+  z-index: 5;
+  cursor: auto;
+  ${({ active }) => (active ? OverlayShow : "")}
+`;
+
 export default ({ following, followingModal, setFollowingModal }) => {
   return (
     <>
-      <div className={`Modal ${followingModal ? "Show" : ""}`}>
+      <FollowingModal active={followingModal}>
         <FollowersHeader>
           <Column>
             <FollowersTitle>
@@ -84,8 +101,9 @@ export default ({ following, followingModal, setFollowingModal }) => {
               ))}
           </ul>
         </ModalContainer>
-      </div>
-      <div className={`Overlay ${followingModal ? "Show" : ""}`} />
+      </FollowingModal>
+
+      <Overlay active={followingModal} />
     </>
   );
 };

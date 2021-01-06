@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { HeartFull, CommentFull } from "./Icons";
+import { Link } from "react-router-dom";
 
 const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.4);
@@ -19,6 +20,7 @@ const Overlay = styled.div`
 
 const Container = styled.div`
   background-image: url(${(props) => props.bg});
+  height: 200px;
   background-size: cover;
   cursor: pointer;
   &:hover {
@@ -42,22 +44,28 @@ const NumberText = styled.span`
   font-size: 16px;
 `;
 
-const SquarePost = ({ likeCount, commentCount, file }) => (
-  <Container bg={file.url}>
-    <Overlay>
-      <Number>
-        <HeartFull />
-        <NumberText>{likeCount}</NumberText>
-      </Number>
-      <Number>
-        <CommentFull />
-        <NumberText>{commentCount}</NumberText>
-      </Number>
-    </Overlay>
-  </Container>
-);
+const SquarePost = ({ id, likeCount, commentCount, file }) => {
+  const [postModal, setPostModal] = useState(false);
+  return (
+    <Link to={`/${id}`}>
+      <Container bg={file.url} onClick={() => setPostModal(!postModal)}>
+        <Overlay>
+          <Number>
+            <HeartFull />
+            <NumberText>{likeCount}</NumberText>
+          </Number>
+          <Number>
+            <CommentFull />
+            <NumberText>{commentCount}</NumberText>
+          </Number>
+        </Overlay>
+      </Container>
+    </Link>
+  );
+};
 
 SquarePost.propTypes = {
+  id: PropTypes.string.isRequired,
   likeCount: PropTypes.number.isRequired,
   commentCount: PropTypes.number.isRequired,
   file: PropTypes.object.isRequired,

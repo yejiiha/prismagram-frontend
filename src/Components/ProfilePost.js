@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { PostIcon, Tv, Tagged } from "./Icons";
 import SquarePost from "./SquarePost";
@@ -32,6 +33,10 @@ const Posts = styled.div`
 `;
 
 const Text = styled.div``;
+
+const PostLink = styled(Link)`
+  color: inherit;
+`;
 
 export default ({ posts }) => {
   const [tab, setTab] = useState("posts");
@@ -102,6 +107,7 @@ export default ({ posts }) => {
             posts.map((post) => (
               <SquarePost
                 key={post.id}
+                id={post.id}
                 likeCount={post.likeCount}
                 commentCount={post.commentCount}
                 file={post.files[0]}

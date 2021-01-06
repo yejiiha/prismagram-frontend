@@ -10,7 +10,6 @@ import Button from "../../Components/Button";
 import ProfilePost from "../../Components/ProfilePost";
 import FollowersModal from "../../Components/FollowersModal";
 import FollowingModal from "../../Components/FollowingModal";
-import "./style.css";
 
 const Wrapper = styled.div`
   min-height: 100vh;
