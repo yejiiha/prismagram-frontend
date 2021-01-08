@@ -3,6 +3,8 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { HeartFull, CommentFull } from "./Icons";
 import { Link } from "react-router-dom";
+import Posts from "../Routes/Posts";
+import Modal from "./Modal";
 
 const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0.4);
@@ -45,10 +47,10 @@ const NumberText = styled.span`
 `;
 
 const SquarePost = ({ id, likeCount, commentCount, file }) => {
-  const [postModal, setPostModal] = useState(false);
+  const [displayModal, setDisplayModal] = useState(false);
   return (
-    <Link to={`/${id}`}>
-      <Container bg={file.url} onClick={() => setPostModal(!postModal)}>
+    <>
+      <Container bg={file.url} onClick={() => setDisplayModal(!displayModal)}>
         <Overlay>
           <Number>
             <HeartFull />
@@ -60,7 +62,9 @@ const SquarePost = ({ id, likeCount, commentCount, file }) => {
           </Number>
         </Overlay>
       </Container>
-    </Link>
+
+      <Modal displayModal={displayModal} setDisplayModal={setDisplayModal} />
+    </>
   );
 };
 

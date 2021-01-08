@@ -1,48 +1,128 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
-import { gql, useQuery } from "@apollo/client";
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { useMutation } from "@apollo/client";
+import useInput from "../../Hooks/useInput";
 import PostModalPresenter from "./PostModalPresenter";
+import { ADD_COMMENT, TOGGLE_LIKE } from "../Post/PostQueries";
+import { toast } from "react-toastify";
 
-const GET_POST = gql`
-  query seeFullPost($id: String!) {
-    seeFullPost(id: $id) {
-      id
-      location
-      caption
-      user {
-        id
-        avatar
-        username
-      }
-      files {
-        id
-        url
-      }
-      likeCount
-      isLiked
-      comments {
-        id
-        text
-        user {
-          id
-          username
-        }
-      }
-      createdAt
-      commentCount
+const PostModalContainer = ({
+  id,
+  user,
+  files,
+  likeCount,
+  isLiked,
+  comments,
+  createdAt,
+  caption,
+  location,
+  postModal,
+  closeModal,
+}) => {
+  const [isLikedS, setIsLiked] = useState(isLiked);
+  const [likeCountS, setLikeCount] = useState(likeCount);
+  const [currentItem, setCurrentItem] = useState(0);
+  const [selfComments, setSelfComments] = useState([]);
+  const comment = useInput("");
+  const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, {
+    variables: { postId: id },
+  });
+  const [addCommentMutation] = useMutation(ADD_COMMENT, {
+    variables: { postId: id, text: comment.value },
+  });
+
+  const toggleLike = () => {
+    toggleLikeMutation();
+
+    if (isLikedS === true) {
+      setIsLiked(false);
+      setLikeCount(likeCountS - 1);
+    } else {
+      setIsLiked(true);
+      setLikeCount(likeCountS + 1);
     }
-  }
-`;
+  };
 
-export default withRouter(
-  ({
-    match: {
-      params: { id },
-    },
-  }) => {
-    const { data, loading } = useQuery(GET_POST, { variables: { id } });
-    console.log(data, loading);
-    return <PostModalPresenter loading={loading} data={data} />;
-    // return null;
-  }
-);
+  const onKeyPress = async (e) => {
+    const { which } = e;
+    if (which === 13) {
+      e.preventDefault();
+      try {
+        const {
+          data: { addComment },
+        } = await addCommentMutation();
+        setSelfComments([...selfComments, addComment]);
+        comment.setValue("");
+      } catch {
+        toast.error("Can't send comment");
+      }
+    }
+  };
+
+  const slide = () => {
+    const totalFiles = files.length;
+    if (currentItem === totalFiles - 1) {
+      setTimeout(() => setCurrentItem(0), 2000);
+    } else {
+      setTimeout(() => setCurrentItem(currentItem + 1), 2000);
+    }
+  };
+
+  useEffect(() => {
+    slide();
+  }, [currentItem]);
+
+  return (
+    <PostModalPresenter
+      user={user}
+      files={files}
+      likeCount={likeCountS}
+      isLiked={isLikedS}
+      location={location}
+      caption={caption}
+      comments={comments}
+      createdAt={createdAt}
+      newComment={comment}
+      setIsLiked={setIsLiked}
+      setLikeCount={setLikeCount}
+      currentItem={currentItem}
+      toggleLike={toggleLike}
+      onKeyPress={onKeyPress}
+      selfComments={selfComments}
+    />
+  );
+};
+
+PostModalContainer.propTypes = {
+  id: PropTypes.string.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    avatar: PropTypes.string,
+    username: PropTypes.string.isRequired,
+  }).isRequired,
+  files: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  likeCount: PropTypes.number.isRequired,
+  isLiked: PropTypes.bool.isRequired,
+  comments: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      text: PropTypes.string.isRequired,
+      user: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+      }).isRequired,
+    })
+  ).isRequired,
+  caption: PropTypes.string.isRequired,
+  location: PropTypes.string,
+  createdAt: PropTypes.string.isRequired,
+  postModal: PropTypes.bool.isRequired,
+  closeModal: PropTypes.func.isRequired,
+};
+
+export default PostModalContainer;
