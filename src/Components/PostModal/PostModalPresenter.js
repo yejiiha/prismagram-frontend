@@ -1,76 +1,51 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
 import TextareaAutosize from "react-autosize-textarea";
 import { Link } from "react-router-dom";
 import FatText from "../FatText";
 import Avatar from "../Avatar";
-import { HeartFull, HeartEmpty, Comment as CommentIcon } from "../Icons";
+import {
+  HeartFull,
+  HeartEmpty,
+  Comment as CommentIcon,
+  CloseBtn,
+} from "../Icons";
 
 const ModalShow = css`
-  top: 30%;
+  top: 20%;
 `;
 
-const Wrapper = styled.div`
+const Modal = styled.div`
   display: flex;
-  flex-direction: column;
   position: fixed;
-  top: -550vh;
-  left: 35%;
+  top: -250vh;
   background-color: #fff;
-  width: 400px;
-  height: 400px;
+  align-items: center;
+  margin: auto;
+  max-width: 935px;
+  height: 600px;
+  width: 100%;
   box-shadow: 0 0 4px 0px rgba(0, 0, 0, 0.15);
   z-index: 10;
   cursor: auto;
-  border-radius: 12px;
-  /* ${({ active }) => (active ? ModalShow : "")} */
+  ${({ active }) => (active ? ModalShow : "")}
 `;
 
-const Close = styled.button`
-  cursor: pointer;
-  position: absolute;
-  top: 12px;
-  right: 10px;
-  background-color: transparent;
-  border: 0;
-  font-size: 18px;
-  border: none;
-  outline: none;
-`;
-
-const Post = styled.div`
-  ${(props) => props.theme.whiteBox};
+const ModalColumn = styled.div`
   width: 100%;
-  max-width: 600px;
-  margin-bottom: 25px;
-  user-select: none;
-  a {
-    color: inherit;
-  }
-`;
-
-const Header = styled.header`
-  padding: 15px;
   display: flex;
-  align-items: center;
-`;
-
-const UserColumn = styled.div`
-  margin-left: 10px;
-`;
-
-const PLink = styled(Link)`
-  &:hover {
-    text-decoration: underline;
-    text-underline-position: under;
+  flex-direction: column;
+  &:first-child {
+    left: 0;
+    width: 600px;
+    height: 600px;
+    background-color: yellowgreen;
   }
-`;
-
-const Location = styled.span`
-  display: block;
-  margin-top: 5px;
-  font-size: 12px;
+  &:last-child {
+    left: 0;
+    width: 335px;
+    height: 600px;
+  }
 `;
 
 const Files = styled.div`
@@ -95,12 +70,78 @@ const File = styled.div`
   transition: opacity 0.5s linear;
 `;
 
-const Button = styled.span`
-  cursor: pointer;
+const Header = styled.header`
+  height: 72px;
+  padding: 16px;
+  right: 0;
+  width: 335px;
+  display: flex;
+  align-items: center;
 `;
 
-const Meta = styled.div`
+const UserColumn = styled.div`
+  margin-left: 14px;
+  display: inline-block;
+  flex-shrink: 1;
+  min-width: 0;
+`;
+
+const PLink = styled(Link)`
+  &:hover {
+    text-decoration: underline;
+    text-underline-position: under;
+  }
+`;
+
+const CommentsWrapper = styled.div`
+  height: 370px;
+  border-top: 1px solid ${(props) => props.theme.moreLightGreyColor};
+  border-bottom: 1px solid ${(props) => props.theme.moreLightGreyColor};
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const CommentLists = styled.ul`
+  width: 100%;
+  height: 100%;
+`;
+
+const CommentList = styled.li`
+  padding: 16px;
+`;
+
+const Comment = styled.div`
+  display: flex;
+`;
+
+const CommentColumn = styled(UserColumn)``;
+
+const CommentRow = styled.div``;
+
+const Caption = styled.span`
+  margin-left: 10px;
+`;
+
+const CommentTimestamp = styled.span`
+  font-weight: 400;
+  text-transform: uppercase;
+  opacity: 0.5;
+  display: block;
+  font-size: 12px;
+  margin-top: 10px;
+`;
+
+const Container = styled.div`
   padding: 15px;
+  height: 100px;
+  border-bottom: ${(props) => props.theme.moreLightGreyColor} 1px solid;
+`;
+
+const Button = styled.span`
+  cursor: pointer;
 `;
 
 const Buttons = styled.div`
@@ -120,7 +161,6 @@ const Timestamp = styled.span`
   font-size: 12px;
   margin: 10px 0px;
   padding-bottom: 10px;
-  border-bottom: ${(props) => props.theme.lightGreyColor} 1px solid;
 `;
 
 const Textarea = styled(TextareaAutosize)`
@@ -128,24 +168,27 @@ const Textarea = styled(TextareaAutosize)`
   width: 100%;
   resize: none;
   font-size: 14px;
+  padding: 20px 16px;
   &:focus {
     outline: none;
   }
 `;
 
-const Comments = styled.ul`
-  margin-top: 10px;
-`;
-
-const Comment = styled.li`
-  margin-bottom: 7px;
-  span {
-    margin-right: 5px;
+const Close = styled.button`
+  cursor: pointer;
+  position: absolute;
+  top: 12px;
+  right: 10px;
+  background-color: transparent;
+  border: 0;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  padding-bottom: 12px;
+  padding-top: 12px;
+  svg {
+    fill: #fff;
   }
-`;
-
-const Caption = styled.div`
-  margin: 10px 0px;
 `;
 
 const OverlayShow = css`
@@ -162,7 +205,7 @@ const Overlay = styled.div`
   display: none;
   z-index: 5;
   cursor: auto;
-  /* ${({ active }) => (active ? OverlayShow : "")} */
+  ${({ active }) => (active ? OverlayShow : "")}
 `;
 
 export default ({
@@ -179,177 +222,94 @@ export default ({
   comments,
   selfComments,
   caption,
-  postModal,
-  closeModal,
-}) =>
-  postModal ? (
-    <Wrapper>
-      <Overlay onClick={(e) => closeModal(e)} />
-      <Close onClick={(e) => closeModal(e)}>X</Close>
-      <Post>
-        <Header>
-          <Avatar size="sm" url={avatar} />
-          <UserColumn>
-            <PLink to={`/${username}`}>
-              <FatText text={username} />
-            </PLink>
-            <Location>{location}</Location>
-          </UserColumn>
-        </Header>
-        <Files>
-          {files &&
-            files.map((file, index) => (
-              <File
-                key={file.id}
-                id={file.id}
-                src={file.url}
-                showing={index === currentItem}
-              />
-            ))}
-        </Files>
-        <Meta>
-          <Buttons>
-            <Button onClick={toggleLike}>
-              {isLiked ? <HeartFull /> : <HeartEmpty />}
-            </Button>
-            <Button>
-              <CommentIcon />
-            </Button>
-          </Buttons>
-          <FatText text={likeCount === 1 ? "1 like" : `${likeCount} likes`} />
-          <Caption>
-            <PLink to={`/${username}`}>
-              <FatText text={username} />
-            </PLink>{" "}
-            {caption}
-          </Caption>
-          {comments && (
-            <Comments>
-              {comments.map((comment) => (
-                <Comment key={comment.id}>
-                  <PLink to={`/${comment.user.username}`}>
-                    <FatText text={comment.user.username} />
-                  </PLink>
-                  {comment.text}
-                </Comment>
+  displayModal,
+  setDisplayModal,
+}) => {
+  return (
+    <>
+      <Modal active={displayModal}>
+        <ModalColumn>
+          <Files>
+            {files &&
+              files.map((file, index) => (
+                <File
+                  key={file.id}
+                  id={file.id}
+                  src={file.url}
+                  showing={index === currentItem}
+                />
               ))}
-              {selfComments.map((comment) => (
-                <Comment key={comment.id}>
-                  <FatText text={comment.user.username} />
-                  {comment.text}
+          </Files>
+        </ModalColumn>
+        <ModalColumn>
+          <Header>
+            <Avatar size="sm" url={avatar} />
+            <UserColumn>
+              <PLink to={`/${username}`}>
+                <FatText text={username} />
+              </PLink>
+            </UserColumn>
+          </Header>
+          <CommentsWrapper>
+            <CommentLists>
+              <CommentList>
+                <Comment>
+                  <Avatar size="sm" url={avatar} />
+                  <CommentColumn>
+                    <CommentRow>
+                      <PLink to={`/${username}`}>
+                        <FatText text={username} />
+                      </PLink>
+                      <Caption>{caption}</Caption>
+                    </CommentRow>
+                    <CommentRow>
+                      <CommentTimestamp>{createdAt}</CommentTimestamp>
+                    </CommentRow>
+                  </CommentColumn>
                 </Comment>
-              ))}
-            </Comments>
-          )}
-          <Timestamp>{createdAt}</Timestamp>
+              </CommentList>
+              <CommentList>
+                <Comment>
+                  <Avatar size="sm" url={avatar} />
+                  <CommentColumn>
+                    <CommentRow>
+                      <FatText text="guest1" />
+                      <Caption>Hihi</Caption>
+                    </CommentRow>
+                    <CommentRow>
+                      <CommentTimestamp>2020.12.24</CommentTimestamp>
+                    </CommentRow>
+                  </CommentColumn>
+                </Comment>
+              </CommentList>
+            </CommentLists>
+          </CommentsWrapper>
+          <Container>
+            <Buttons>
+              <Button onClick={toggleLike}>
+                {isLiked ? <HeartFull /> : <HeartEmpty />}
+              </Button>
+              <Button>
+                <CommentIcon />
+              </Button>
+            </Buttons>
+            <FatText text={likeCount === 1 ? "1 like" : `${likeCount} likes`} />
+            <Timestamp>{createdAt}</Timestamp>
+          </Container>
           <Textarea
             placeholder={"Add a comment..."}
             value={newComment.value}
             onChange={newComment.onChange}
             onKeyPress={onKeyPress}
           />
-        </Meta>
-      </Post>
-    </Wrapper>
-  ) : (
-    <></>
+        </ModalColumn>
+      </Modal>
+
+      <Overlay active={displayModal}>
+        <Close onClick={() => setDisplayModal(!displayModal)}>
+          <CloseBtn />
+        </Close>
+      </Overlay>
+    </>
   );
-
-// const PostModalPresenter = ({
-
-//   user: { username, avatar },
-//   location,
-//   files,
-//   isLiked,
-//   likeCount,
-//   createdAt,
-//   newComment,
-//   currentItem,
-//   toggleLike,
-//   onKeyPress,
-//   comments,
-//   selfComments,
-//   caption,
-// }) => {
-//   const { postModal, closeModal } = props;
-
-//   return postModal ? (
-//     <Wrapper>
-//       <Overlay onClick={(e) => closeModal(e)} />
-//       <Close onClick={(e) => closeModal(e)}>X</Close>
-//       <Post>
-//         <Header>
-//           <Avatar size="sm" url={avatar} />
-//           <UserColumn>
-//             <PLink to={`/${username}`}>
-//               <FatText text={username} />
-//             </PLink>
-//             <Location>{location}</Location>
-//           </UserColumn>
-//         </Header>
-//         <Files>
-//           {files &&
-//             files.map((file, index) => (
-//               <File
-//                 key={file.id}
-//                 id={file.id}
-//                 src={file.url}
-//                 showing={index === currentItem}
-//               />
-//             ))}
-//         </Files>
-//         <Meta>
-//           <Buttons>
-//             <Button onClick={toggleLike}>
-//               {isLiked ? <HeartFull /> : <HeartEmpty />}
-//             </Button>
-//             <Button>
-//               <CommentIcon />
-//             </Button>
-//           </Buttons>
-//           <FatText text={likeCount === 1 ? "1 like" : `${likeCount} likes`} />
-//           <Caption>
-//             <PLink to={`/${username}`}>
-//               <FatText text={username} />
-//             </PLink>{" "}
-//             {caption}
-//           </Caption>
-//           {comments && (
-//             <Comments>
-//               {comments.map((comment) => (
-//                 <Comment key={comment.id}>
-//                   <PLink to={`/${comment.user.username}`}>
-//                     <FatText text={comment.user.username} />
-//                   </PLink>
-//                   {comment.text}
-//                 </Comment>
-//               ))}
-//               {selfComments.map((comment) => (
-//                 <Comment key={comment.id}>
-//                   <FatText text={comment.user.username} />
-//                   {comment.text}
-//                 </Comment>
-//               ))}
-//             </Comments>
-//           )}
-//           <Timestamp>{createdAt}</Timestamp>
-//           <Textarea
-//             placeholder={"Add a comment..."}
-//             value={newComment.value}
-//             onChange={newComment.onChange}
-//             onKeyPress={onKeyPress}
-//           />
-//         </Meta>
-//       </Post>
-//     </Wrapper>
-//   ) : (
-//     <></>
-//   );
-// };
-
-// PostModalPresenter.propType = {
-//   postModal: PropTypes.bool.isRequired,
-//   closeModal: PropTypes.func.isRequired,
-// };
-
-// export default PostModalPresenter;
+};

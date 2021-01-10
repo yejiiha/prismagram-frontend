@@ -2,6 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import FatText from "./FatText";
 import FollowModalList from "./FollowModalList";
+import { CloseBtn } from "./Icons";
 
 const ModalShow = css`
   top: 30%;
@@ -43,13 +44,16 @@ const FollowersTitle = styled.h3``;
 const Close = styled.button`
   cursor: pointer;
   position: absolute;
-  top: 16px;
+  top: 12px;
   right: 10px;
   background-color: transparent;
   border: 0;
   font-size: 18px;
   border: none;
   outline: none;
+  svg {
+    fill: #2d2d2d;
+  }
 `;
 
 const ModalContainer = styled.div``;
@@ -82,7 +86,9 @@ export default ({ following, followingModal, setFollowingModal }) => {
             </FollowersTitle>
           </Column>
           <Column>
-            <Close onClick={() => setFollowingModal(!followingModal)}>X</Close>
+            <Close onClick={() => setFollowingModal(!followingModal)}>
+              <CloseBtn size={18} />
+            </Close>
           </Column>
         </FollowersHeader>
 

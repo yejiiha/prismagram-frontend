@@ -3,13 +3,18 @@ import styled, { css } from "styled-components";
 import TextareaAutosize from "react-autosize-textarea";
 import Avatar from "./Avatar";
 import FatText from "./FatText";
-import { HeartFull, HeartEmpty, Comment as CommentIcon } from "./Icons";
+import {
+  HeartFull,
+  HeartEmpty,
+  Comment as CommentIcon,
+  CloseBtn,
+} from "./Icons";
 
 const ModalShow = css`
   top: 20%;
 `;
 
-const PostModal = styled.div`
+const Modal = styled.div`
   display: flex;
   position: fixed;
   top: -250vh;
@@ -151,7 +156,9 @@ const Close = styled.button`
   outline: none;
   padding-bottom: 12px;
   padding-top: 12px;
-  color: #fff;
+  svg {
+    fill: #fff;
+  }
 `;
 
 const OverlayShow = css`
@@ -171,10 +178,26 @@ const Overlay = styled.div`
   ${({ active }) => (active ? OverlayShow : "")}
 `;
 
-export default ({ displayModal, setDisplayModal }) => {
+export default ({
+  // user: { username, avatar },
+  // location,
+  // files,
+  // isLiked,
+  // likeCount,
+  // createdAt,
+  // newComment,
+  // currentItem,
+  // toggleLike,
+  // onKeyPress,
+  // comments,
+  // selfComments,
+  // caption,
+  displayModal,
+  setDisplayModal,
+}) => {
   return (
     <>
-      <PostModal active={displayModal}>
+      <Modal active={displayModal}>
         <ModalColumn>files</ModalColumn>
         <ModalColumn>
           <Header>
@@ -191,9 +214,7 @@ export default ({ displayModal, setDisplayModal }) => {
                   <CommentColumn>
                     <CommentRow>
                       <FatText text="username" />
-                      <Caption>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      </Caption>
+                      <Caption>Lorem ipsum dolor sit amet,</Caption>
                     </CommentRow>
                     <CommentRow>
                       <CommentTimestamp>2020.12.24</CommentTimestamp>
@@ -291,10 +312,12 @@ export default ({ displayModal, setDisplayModal }) => {
           </Container>
           <Textarea placeholder={"Add a comment..."} />
         </ModalColumn>
-      </PostModal>
+      </Modal>
 
       <Overlay active={displayModal}>
-        <Close onClick={() => setDisplayModal(!displayModal)}>X</Close>
+        <Close onClick={() => setDisplayModal(!displayModal)}>
+          <CloseBtn />
+        </Close>
       </Overlay>
     </>
   );

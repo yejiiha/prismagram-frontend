@@ -2,6 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import FatText from "./FatText";
 import FollowModalList from "./FollowModalList";
+import { CloseBtn } from "./Icons";
 
 const ModalShow = css`
   top: 30%;
@@ -50,6 +51,9 @@ const Close = styled.button`
   font-size: 18px;
   border: none;
   outline: none;
+  svg {
+    fill: #2d2d2d;
+  }
 `;
 
 const ModalContainer = styled.div``;
@@ -82,7 +86,9 @@ export default ({ followers, followersModal, setFollowersModal }) => {
             </FollowersTitle>
           </Column>
           <Column>
-            <Close onClick={() => setFollowersModal(!followersModal)}>X</Close>
+            <Close onClick={() => setFollowersModal(!followersModal)}>
+              <CloseBtn size={18} />
+            </Close>
           </Column>
         </FollowersHeader>
 

@@ -1,68 +1,75 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
+import React from "react";
 import { withRouter } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import Loader from "../Components/Loader";
 import PostModal from "../Components/PostModal";
+import Modal from "../Components/Modal";
 
-const Container = styled.div``;
-
-const Overlay = styled.div`
-  background-color: rgba(0, 0, 0, 0.55);
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  position: fixed;
-  display: none;
-  z-index: 5;
-  cursor: auto;
+const SEE_POST = gql`
+  query seeFullPost($id: String!) {
+    seeFullPost(id: $id) {
+      id
+      location
+      caption
+      user {
+        id
+        avatar
+        username
+      }
+      files {
+        id
+        url
+      }
+      likeCount
+      isLiked
+      comments {
+        id
+        text
+        user {
+          id
+          username
+        }
+      }
+      createdAt
+      commentCount
+    }
+  }
 `;
 
-const Contents = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Title = styled.h2``;
-
-const Close = styled.div`
-  cursor: pointer;
-  position: absolute;
-  top: 12px;
-  right: 10px;
-  background-color: transparent;
-  border: 0;
-  font-size: 18px;
-  border: none;
-  outline: none;
-`;
-
-const Body = styled.div``;
-
-const Posts = (props) => {
-  const { state, closeModal } = props;
-
-  return state ? (
-    <Container>
-      <Overlay onClick={(event) => closeModal(event)} />
-      <Contents>
-        <Title>
-          모달 타이틀
-          <Close onClick={(event) => closeModal(event)}>X</Close>
-        </Title>
-        <Body>모달내용</Body>
-      </Contents>
-    </Container>
-  ) : (
-    <></>
-  );
-};
-
-Posts.propTypes = {
-  state: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired,
-};
-
-export default Posts;
+export default withRouter(
+  ({
+    match: {
+      params: { id },
+    },
+    postId,
+    displayModal,
+    setDisplayModal,
+  }) => {
+    const { data, loading } = useQuery(SEE_POST, { variables: { id } });
+    console.log(data, loading);
+    return (
+      <>
+        {/* {loading && <Loader />} */}
+        {!loading &&
+          data &&
+          data?.seeFullPost &&
+          data?.seeFullPost.map((post) => (
+            <PostModal
+              key={post.id}
+              id={post.id}
+              user={post.user}
+              files={post.files}
+              likeCount={post.likeCount}
+              isLiked={post.isLiked}
+              comments={post.comments}
+              createdAt={post.createdAt}
+              location={post.location}
+              caption={post.caption}
+              displayModal={displayModal}
+              setDisplayModal={setDisplayModal}
+            />
+          ))}
+      </>
+    );
+  }
+);

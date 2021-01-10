@@ -5,6 +5,7 @@ import useInput from "../../Hooks/useInput";
 import PostModalPresenter from "./PostModalPresenter";
 import { ADD_COMMENT, TOGGLE_LIKE } from "../Post/PostQueries";
 import { toast } from "react-toastify";
+import Modal from "../Modal";
 
 const PostModalContainer = ({
   id,
@@ -16,8 +17,8 @@ const PostModalContainer = ({
   createdAt,
   caption,
   location,
-  postModal,
-  closeModal,
+  displayModal,
+  setDisplayModal,
 }) => {
   const [isLikedS, setIsLiked] = useState(isLiked);
   const [likeCountS, setLikeCount] = useState(likeCount);
@@ -89,6 +90,8 @@ const PostModalContainer = ({
       toggleLike={toggleLike}
       onKeyPress={onKeyPress}
       selfComments={selfComments}
+      displayModal={displayModal}
+      setDisplayModal={setDisplayModal}
     />
   );
 };
@@ -121,8 +124,8 @@ PostModalContainer.propTypes = {
   caption: PropTypes.string.isRequired,
   location: PropTypes.string,
   createdAt: PropTypes.string.isRequired,
-  postModal: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired,
+  displayModal: PropTypes.bool.isRequired,
+  setDisplayModal: PropTypes.bool.isRequired,
 };
 
 export default PostModalContainer;
