@@ -266,6 +266,20 @@ export default ({
           <CommentsWrapper>
             {comments && (
               <CommentLists>
+                <CommentList>
+                  <Avatar size="sm" url={avatar} />
+                  <CommentColumn>
+                    <CommentRow>
+                      <PLink to={`/${username}`}>
+                        <FatText text={username} />
+                      </PLink>
+                      <CommentCaption>{caption}</CommentCaption>
+                    </CommentRow>
+                    <CommentRow>
+                      <CommentTimestamp>{createdAt}</CommentTimestamp>
+                    </CommentRow>
+                  </CommentColumn>
+                </CommentList>
                 {comments.map((comment) => (
                   <CommentList key={comment.id}>
                     <Avatar size="sm" url={avatar} />
@@ -277,7 +291,7 @@ export default ({
                         <CommentCaption>{comment.text}</CommentCaption>
                       </CommentRow>
                       <CommentRow>
-                        <CommentTimestamp>{createdAt}</CommentTimestamp>
+                        <CommentTimestamp>{comment.createdAt}</CommentTimestamp>
                       </CommentRow>
                     </CommentColumn>
                   </CommentList>

@@ -28,6 +28,7 @@ const SEE_POST = gql`
           id
           username
         }
+        createdAt
       }
       createdAt
       commentCount
