@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled, { css } from "styled-components";
 import TextareaAutosize from "react-autosize-textarea";
 import { Link } from "react-router-dom";
@@ -39,7 +39,6 @@ const ModalColumn = styled.div`
     left: 0;
     width: 600px;
     height: 600px;
-    background-color: yellowgreen;
   }
   &:last-child {
     left: 0;
@@ -81,16 +80,24 @@ const Header = styled.header`
 
 const UserColumn = styled.div`
   margin-left: 14px;
-  display: inline-block;
+  /* display: inline-block; */
   flex-shrink: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
 `;
 
 const PLink = styled(Link)`
+  color: inherit;
   &:hover {
     text-decoration: underline;
     text-underline-position: under;
   }
+`;
+
+const Location = styled.div`
+  margin-top: 4px;
+  font-size: 12px;
 `;
 
 const CommentsWrapper = styled.div`
@@ -111,19 +118,16 @@ const CommentLists = styled.ul`
 
 const CommentList = styled.li`
   padding: 16px;
+  display: flex;
 `;
 
-const Comment = styled.div`
-  display: flex;
+const CommentCaption = styled.span`
+  margin-left: 6px;
 `;
 
 const CommentColumn = styled(UserColumn)``;
 
 const CommentRow = styled.div``;
-
-const Caption = styled.span`
-  margin-left: 10px;
-`;
 
 const CommentTimestamp = styled.span`
   font-weight: 400;
@@ -225,6 +229,14 @@ export default ({
   displayModal,
   setDisplayModal,
 }) => {
+  // useEffect(() => {
+  //   document.body.style.cssText = `position: fixed; top: -${window.scrollY}px`;
+  //   return () => {
+  //     const scrollY = document.body.style.top;
+  //     document.body.style.cssText = `position: ""; top: "";`;
+  //     window.scrollTo(0, parseInt(scrollY || "0") * -1);
+  //   };
+  // }, []);
   return (
     <>
       <Modal active={displayModal}>
@@ -248,41 +260,37 @@ export default ({
               <PLink to={`/${username}`}>
                 <FatText text={username} />
               </PLink>
+              <Location>{location}</Location>
             </UserColumn>
           </Header>
           <CommentsWrapper>
-            <CommentLists>
-              <CommentList>
-                <Comment>
-                  <Avatar size="sm" url={avatar} />
-                  <CommentColumn>
-                    <CommentRow>
-                      <PLink to={`/${username}`}>
-                        <FatText text={username} />
-                      </PLink>
-                      <Caption>{caption}</Caption>
-                    </CommentRow>
-                    <CommentRow>
-                      <CommentTimestamp>{createdAt}</CommentTimestamp>
-                    </CommentRow>
-                  </CommentColumn>
-                </Comment>
-              </CommentList>
-              <CommentList>
-                <Comment>
-                  <Avatar size="sm" url={avatar} />
-                  <CommentColumn>
-                    <CommentRow>
-                      <FatText text="guest1" />
-                      <Caption>Hihi</Caption>
-                    </CommentRow>
-                    <CommentRow>
-                      <CommentTimestamp>2020.12.24</CommentTimestamp>
-                    </CommentRow>
-                  </CommentColumn>
-                </Comment>
-              </CommentList>
-            </CommentLists>
+            {comments && (
+              <CommentLists>
+                {comments.map((comment) => (
+                  <CommentList key={comment.id}>
+                    <Avatar size="sm" url={avatar} />
+                    <CommentColumn>
+                      <CommentRow>
+                        <PLink to={`/${comment.user.username}`}>
+                          <FatText text={comment.user.username} />
+                        </PLink>
+                        <CommentCaption>{comment.text}</CommentCaption>
+                      </CommentRow>
+                      <CommentRow>
+                        <CommentTimestamp>{createdAt}</CommentTimestamp>
+                      </CommentRow>
+                    </CommentColumn>
+                  </CommentList>
+                ))}
+                {selfComments.map((comment) => (
+                  <CommentList key={comment.id}>
+                    <Avatar size="sm" url={avatar} />
+                    <FatText text={comment.user.username} />
+                    <CommentCaption>{comment.text}</CommentCaption>
+                  </CommentList>
+                ))}
+              </CommentLists>
+            )}
           </CommentsWrapper>
           <Container>
             <Buttons>

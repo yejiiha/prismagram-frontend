@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import Loader from "../Components/Loader";
 import PostModal from "../Components/PostModal";
-import Modal from "../Components/Modal";
 
 const SEE_POST = gql`
   query seeFullPost($id: String!) {
@@ -36,40 +35,26 @@ const SEE_POST = gql`
   }
 `;
 
-export default withRouter(
-  ({
-    match: {
-      params: { id },
-    },
-    postId,
-    displayModal,
-    setDisplayModal,
-  }) => {
-    const { data, loading } = useQuery(SEE_POST, { variables: { id } });
-    console.log(data, loading);
-    return (
-      <>
-        {/* {loading && <Loader />} */}
-        {!loading &&
-          data &&
-          data?.seeFullPost &&
-          data?.seeFullPost.map((post) => (
-            <PostModal
-              key={post.id}
-              id={post.id}
-              user={post.user}
-              files={post.files}
-              likeCount={post.likeCount}
-              isLiked={post.isLiked}
-              comments={post.comments}
-              createdAt={post.createdAt}
-              location={post.location}
-              caption={post.caption}
-              displayModal={displayModal}
-              setDisplayModal={setDisplayModal}
-            />
-          ))}
-      </>
-    );
-  }
-);
+export default withRouter(({ id, displayModal, setDisplayModal }) => {
+  const { data, loading } = useQuery(SEE_POST, { variables: { id } });
+  return (
+    <>
+      {!loading && data && data.seeFullPost && (
+        <PostModal
+          key={data.seeFullPost.id}
+          id={data.seeFullPost.id}
+          user={data.seeFullPost.user}
+          files={data.seeFullPost.files}
+          likeCount={data.seeFullPost.likeCount}
+          isLiked={data.seeFullPost.isLiked}
+          comments={data.seeFullPost.comments}
+          createdAt={data.seeFullPost.createdAt}
+          location={data.seeFullPost.location}
+          caption={data.seeFullPost.caption}
+          displayModal={displayModal}
+          setDisplayModal={setDisplayModal}
+        />
+      )}
+    </>
+  );
+});

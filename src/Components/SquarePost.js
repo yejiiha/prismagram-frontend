@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { HeartFull, CommentFull } from "./Icons";
 import { Link } from "react-router-dom";
-import Modal from "./Modal";
 import PostModal from "./PostModal";
 import Posts from "../Routes/Posts";
 
@@ -49,6 +48,7 @@ const NumberText = styled.span`
 
 const SquarePost = ({ id, likeCount, commentCount, file }) => {
   const [displayModal, setDisplayModal] = useState(false);
+
   return (
     <>
       <Container bg={file.url} onClick={() => setDisplayModal(!displayModal)}>
@@ -65,7 +65,7 @@ const SquarePost = ({ id, likeCount, commentCount, file }) => {
       </Container>
 
       <Posts
-        postId={id}
+        id={id}
         displayModal={displayModal}
         setDisplayModal={setDisplayModal}
       />

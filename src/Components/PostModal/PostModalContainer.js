@@ -5,7 +5,6 @@ import useInput from "../../Hooks/useInput";
 import PostModalPresenter from "./PostModalPresenter";
 import { ADD_COMMENT, TOGGLE_LIKE } from "../Post/PostQueries";
 import { toast } from "react-toastify";
-import Modal from "../Modal";
 
 const PostModalContainer = ({
   id,
