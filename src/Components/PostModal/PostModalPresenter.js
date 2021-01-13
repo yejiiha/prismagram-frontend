@@ -10,6 +10,7 @@ import {
   Comment as CommentIcon,
   CloseBtn,
 } from "../Icons";
+import Slider from "../Slider";
 
 const ModalShow = css`
   top: 20%;
@@ -45,28 +46,6 @@ const ModalColumn = styled.div`
     width: 335px;
     height: 600px;
   }
-`;
-
-const Files = styled.div`
-  position: relative;
-  padding-bottom: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  flex-shrink: 0;
-`;
-
-const File = styled.div`
-  max-width: 100%;
-  width: 100%;
-  height: 600px;
-  position: absolute;
-  top: 0;
-  background-image: url(${(props) => props.src});
-  background-size: cover;
-  background-position: center;
-  opacity: ${(props) => (props.showing ? 1 : 0)};
-  transition: opacity 0.5s linear;
 `;
 
 const Header = styled.header`
@@ -220,7 +199,6 @@ export default ({
   likeCount,
   createdAt,
   newComment,
-  currentItem,
   toggleLike,
   onKeyPress,
   comments,
@@ -229,29 +207,11 @@ export default ({
   displayModal,
   setDisplayModal,
 }) => {
-  // useEffect(() => {
-  //   document.body.style.cssText = `position: fixed; top: -${window.scrollY}px`;
-  //   return () => {
-  //     const scrollY = document.body.style.top;
-  //     document.body.style.cssText = `position: ""; top: "";`;
-  //     window.scrollTo(0, parseInt(scrollY || "0") * -1);
-  //   };
-  // }, []);
   return (
     <>
       <Modal active={displayModal}>
         <ModalColumn>
-          <Files>
-            {files &&
-              files.map((file, index) => (
-                <File
-                  key={file.id}
-                  id={file.id}
-                  src={file.url}
-                  showing={index === currentItem}
-                />
-              ))}
-          </Files>
+          <Slider files={files} />
         </ModalColumn>
         <ModalColumn>
           <Header>

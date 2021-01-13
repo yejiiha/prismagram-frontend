@@ -1,14 +1,14 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import FatText from "./FatText";
+import FatText from "../FatText";
 import FollowModalList from "./FollowModalList";
-import { CloseBtn } from "./Icons";
+import { CloseBtn } from "../Icons";
 
 const ModalShow = css`
   top: 30%;
 `;
 
-const FollowersModal = styled.div`
+const FollowingModal = styled.div`
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -75,10 +75,10 @@ const Overlay = styled.div`
   ${({ active }) => (active ? OverlayShow : "")}
 `;
 
-export default ({ followers, followersModal, setFollowersModal }) => {
+export default ({ following, followingModal, setFollowingModal }) => {
   return (
     <>
-      <FollowersModal active={followersModal}>
+      <FollowingModal active={followingModal}>
         <FollowersHeader>
           <Column>
             <FollowersTitle>
@@ -86,7 +86,7 @@ export default ({ followers, followersModal, setFollowersModal }) => {
             </FollowersTitle>
           </Column>
           <Column>
-            <Close onClick={() => setFollowersModal(!followersModal)}>
+            <Close onClick={() => setFollowingModal(!followingModal)}>
               <CloseBtn size={18} />
             </Close>
           </Column>
@@ -94,8 +94,8 @@ export default ({ followers, followersModal, setFollowersModal }) => {
 
         <ModalContainer>
           <ul>
-            {followers &&
-              followers.map((f) => (
+            {following &&
+              following.map((f) => (
                 <FollowModalList
                   key={f.id}
                   id={f.id}
@@ -107,9 +107,9 @@ export default ({ followers, followersModal, setFollowersModal }) => {
               ))}
           </ul>
         </ModalContainer>
-      </FollowersModal>
+      </FollowingModal>
 
-      <Overlay active={followersModal} />
+      <Overlay active={followingModal} />
     </>
   );
 };

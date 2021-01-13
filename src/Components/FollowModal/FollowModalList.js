@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import Avatar from "./Avatar";
-import FatText from "./FatText";
-import FollowButton from "./FollowButton";
+import Avatar from "../Avatar";
+import FatText from "../FatText";
+import FollowButton from "../FollowButton";
 
 const Container = styled.div``;
 

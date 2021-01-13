@@ -8,8 +8,8 @@ import FatText from "../../Components/FatText";
 import FollowButton from "../../Components/FollowButton";
 import Button from "../../Components/Button";
 import ProfilePost from "../../Components/ProfilePost";
-import FollowersModal from "../../Components/FollowersModal";
-import FollowingModal from "../../Components/FollowingModal";
+import FollowersModal from "../../Components/FollowModal/FollowersModal";
+import FollowingModal from "../../Components/FollowModal/FollowingModal";
 
 const Wrapper = styled.div`
   min-height: 100vh;
