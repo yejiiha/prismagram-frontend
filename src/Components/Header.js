@@ -6,6 +6,7 @@ import Input from "./Input";
 import useInput from "../Hooks/useInput";
 import { Compass, HeartEmpty, User, Logo } from "./Icons";
 import { ME } from "../SharedQueries";
+import Avatar from "./Avatar";
 
 const Header = styled.header`
   width: 100%;
@@ -40,7 +41,15 @@ const HeaderColumn = styled.div`
   &:last-child {
     margin-left: auto;
     text-align: right;
+    display: flex;
+    align-items: center;
   }
+`;
+
+const Title = styled.h1`
+  font-size: 24px;
+  text-align: center;
+  font-family: "Lobster", cursive;
 `;
 
 const SearchInput = styled(Input)`
@@ -58,9 +67,14 @@ const SearchInput = styled(Input)`
 `;
 
 const HeaderLink = styled(Link)`
+  color: inherit;
   &:not(:last-child) {
-    margin-right: 30px;
+    margin-right: 24px;
   }
+`;
+
+const HAvatar = styled(Avatar)`
+  top: 1px;
 `;
 
 export default withRouter(({ history }) => {
@@ -74,9 +88,9 @@ export default withRouter(({ history }) => {
     <Header>
       <HeaderWrapper>
         <HeaderColumn>
-          <Link to="/">
-            <Logo />
-          </Link>
+          <HeaderLink to="/">
+            <Title>Prismagram</Title>
+          </HeaderLink>
         </HeaderColumn>
         <HeaderColumn>
           <form onSubmit={onSearchSubmit}>
@@ -94,13 +108,9 @@ export default withRouter(({ history }) => {
           <HeaderLink to="/notifications">
             <HeartEmpty />
           </HeaderLink>
-          {!data?.me ? (
-            <HeaderLink to="/#">
-              <User />
-            </HeaderLink>
-          ) : (
+          {data?.me && (
             <HeaderLink to={data.me.username}>
-              <User />
+              <HAvatar size="sm" url={data?.me?.avatar} />
             </HeaderLink>
           )}
         </HeaderColumn>
